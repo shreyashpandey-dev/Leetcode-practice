@@ -24,34 +24,25 @@
  * }
  */
 class Solution {
-    public TreeNode arrtobst(int[]arr,int l,int h)
+    public TreeNode convToBST(ArrayList<Integer>arr,int l,int r)
     {
-        if(l>h)
-        return null;
-        int mid=l+(h-l)/2;
-        TreeNode node=new TreeNode(arr[mid]);
-        node.left=arrtobst(arr,l,mid-1);
-        node.right=arrtobst(arr,mid+1,h);
-        return node;
+        if(l>r)
+            return null;
+        int mid=l+(r-l)/2;
+        TreeNode root=new TreeNode(arr.get(mid));
+        root.left=convToBST(arr,l,mid-1);
+        root.right=convToBST(arr,mid+1,r);
+        return root;
+        
     }
     public TreeNode sortedListToBST(ListNode head) {
-        ListNode curr=head;
-        int c=0;
-       while(curr!=null)
-       {
-           c++;
-           curr=curr.next;
-       } 
-       int arr[]=new int[c];
-       int i=0;
-       curr=head;
-       while(curr!=null)
-       {
-        arr[i]=curr.val;
-        curr=curr.next;
-        i++;
-       }
-       int l=0,h=arr.length-1;
-      return arrtobst(arr,l,h);
+        ArrayList<Integer>arr=new ArrayList<>();
+        while(head!=null)
+        {
+            arr.add(head.val);
+            head=head.next;
+        }
+        return convToBST(arr,0,arr.size()-1);
+        
     }
 }
