@@ -9,18 +9,56 @@
  * }
  */
 class Solution {
-    ListNode ref;
-    public boolean check(ListNode head)
+     int d=0;
+    ListNode prev=null;
+    public void rev(ListNode curr)
     {
-        if(head==null)
-            return true;
-        boolean ans=check(head.next);
-        boolean isEqual=(ref.val==head.val)?true:false;
-        ref=ref.next;
-        return ans && isEqual;
+        while(curr!=null)
+        {
+            ListNode next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
     }
     public boolean isPalindrome(ListNode head) {
-      ref=head;
-      return check(head);
+        if(head.next==null)
+            return true;
+        ListNode temp=head;
+        int cnt=0;
+        while(temp!=null)
+        {
+            temp=temp.next;
+            cnt++;  
+        }
+        temp=head;
+       d=cnt/2;
+        ListNode st_prev=null;
+        while(d>0)
+        {
+            st_prev=temp;
+            temp=temp.next;
+            d--;
+        }
+        rev(temp);
+        st_prev.next=prev;
+      //  System.out.println(prev.val);
+        d=cnt/2;
+        while(d>0)
+        {
+            if(head.val==prev.val)
+            {
+               // System.out.println(head.val+" "+prev.val);
+                head=head.next;
+                prev=prev.next;
+            }
+            else
+                return false;
+            d--;
+        }
+        return true;
+        
+        
+        
     }
 }
