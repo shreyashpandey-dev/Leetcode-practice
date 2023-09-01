@@ -1,18 +1,15 @@
 class Solution {
-    public int maxProfit(int[] prices) {
-        int lsf = 10000001;
-        int op = 0;
-        int pist = 0;
-        
-        for(int i = 0; i < prices.length; i++){
-            if(prices[i] < lsf){
-                lsf = prices[i];
-            }
-            pist = prices[i] - lsf;
-            if(op < pist){
-                op = pist;
-            }
+    public int maxProfit(int[] arr) {
+        int min=arr[0];
+        int n=arr.length;
+        int maxProfit=0;
+        for(int i=1;i<n;i++)
+        {
+            int cost=arr[i]-min;
+            maxProfit=Math.max(maxProfit,cost);
+            min=Math.min(min,arr[i]);
         }
-        return op;
+        return maxProfit;
+        
     }
 }
