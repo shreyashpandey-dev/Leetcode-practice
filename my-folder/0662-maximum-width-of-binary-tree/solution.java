@@ -13,43 +13,44 @@
  *     }
  * }
  */
-class Pair
-{
-    TreeNode root;
-    int ind;
-    Pair(TreeNode root,int ind)
-    {
-        this.root=root;
-        this.ind=ind;
-    }
-}
+ class Pair 
+ {
+     TreeNode node;
+     int ind;
+     Pair(TreeNode n,int i)
+     {
+         node=n;
+         ind=i;
+     }
+ }
 class Solution {
     public int widthOfBinaryTree(TreeNode root) {
         Queue<Pair>q=new LinkedList<>();
         q.add(new Pair(root,0));
-        int res=-1;
+        int max=0;
         while(!q.isEmpty())
         {
-            int lh=0,rh=0;
             int size=q.size();
+            int st=0,end=0;
             for(int i=0;i<size;i++)
             {
                 Pair p=q.poll();
+                TreeNode curr=p.node;
+                int ind=p.ind;
+                if(curr.left!=null)
+                q.add(new Pair(curr.left,2*ind+1));
+                if(curr.right!=null)
+                q.add(new Pair(curr.right,2*ind+2));
                 if(i==0)
-                    lh=p.ind;
+                st=ind;
                 if(i==size-1)
-                    rh=p.ind;
-                if(p.root.left!=null)
-                    q.add(new Pair(p.root.left,2*p.ind+1));
-                if(p.root.right!=null)
-                    q.add(new Pair(p.root.right,2*p.ind+2));
-                    
+                end=ind;
+                
+
             }
-            res=Math.max(res,rh-lh+1);
-            
+            max=Math.max(max,(end-st+1));
         }
-        return res;
-        
+        return max;
         
     }
 }
