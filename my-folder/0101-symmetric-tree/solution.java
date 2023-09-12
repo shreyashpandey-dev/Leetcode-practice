@@ -13,20 +13,19 @@
  *     }
  * }
  */
-
 class Solution {
-    public boolean sym(TreeNode root1,TreeNode root2)
+     public  boolean isSym(TreeNode root1,TreeNode root2)
     {
         if(root1==null && root2==null)
-            return true;
-        else if(root1==null ||root2==null)
-            return false;
-        return (root1.val==root2.val && sym(root1.left,root2.right)&&sym(root1.right,root2.left));
-        
+        return true;
+        if(root1==null || root2==null)
+        return false;
+        return root1.val==root2.val && isSym(root1.left,root2.right) && isSym(root1.right, root2.left);
     }
     public boolean isSymmetric(TreeNode root) {
         if(root==null)
-            return true;
-      return sym(root.left,root.right);
+        return false;
+        return isSym(root.left,root.right);
+        
     }
 }
