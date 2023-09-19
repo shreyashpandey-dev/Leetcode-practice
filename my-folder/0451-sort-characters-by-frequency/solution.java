@@ -1,36 +1,39 @@
+class Paird
+{
+    char c;
+    int freq;
+    Paird(char ch,int f)
+    {
+        c=ch;
+        freq=f;
+    }
+}
 class Solution {
     public String frequencySort(String s) {
-      int arr[]=new int[123];
-        char ch[]=s.toCharArray();
-        for(int i=0;i<s.length();i++)
-           arr[ch[i]]++;
-        TreeMap<Character,Integer>h=new TreeMap<>();
-        int i=48;
-        while(i<123)
-        {
-            if(arr[i]!=0)
-                h.put((char)i,arr[i]);
-            i++;
-        }
-        PriorityQueue<Pair<Integer,Character>>pq=new PriorityQueue<>((a, b) -> a.getKey() - b.getKey());
-        String j="";
-        //Array.sort(Collections.reverseOrder());
-        for(Map.Entry<Character,Integer>e:h.entrySet())
-        {
-          pq.add(new Pair<>(e.getValue(),e.getKey()));
-        }
-        //String s="";
-        while(!pq.isEmpty())
-        {
-            int cnt=pq.peek().getKey();
-            char y=pq.peek().getValue();
-            while(cnt>0)
-            {
-                j=y+j;
-                cnt--;
-            }  
-            pq.poll();
-        }
-        return j;
+        int n=s.length();
+        List<Paird>arr=new ArrayList<>();  
+     HashMap<Character,Integer>map=new HashMap<>();
+     for(int i=0;i<n;i++)
+     {
+         char d=s.charAt(i);
+         map.put(d,map.getOrDefault(d,0)+1);
+     }
+     for(Map.Entry<Character,Integer>e:map.entrySet())
+     {
+         arr.add(new Paird(e.getKey(),e.getValue()));
+     }
+     Collections.sort(arr,(p1,p2)->Integer.compare(p2.freq,p1.freq));
+     String res="";
+     for(int i=0;i<arr.size();i++)
+     {
+         int f=arr.get(i).freq;
+         while(f>0)
+         {
+             res=res+arr.get(i).c;
+             f--;
+         }
+     }
+     System.out.println(res);
+     return res;
     }
 }
