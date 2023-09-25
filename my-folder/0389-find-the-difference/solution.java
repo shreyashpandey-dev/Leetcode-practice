@@ -1,11 +1,23 @@
 class Solution {
     public char findTheDifference(String s, String t) {
-        char c=0;
-    for(char x:s.toCharArray())
-        c^=x;
-     for(char x:t.toCharArray())
-        c^=x;
-    return c;
-         
+        int arr[]=new int[26];
+        for(int i=0;i<t.length();i++)
+        {
+            char c=t.charAt(i);
+            arr[c-'a']++;
+        }
+        for(int i=0;i<s.length();i++)
+        {
+            char c=s.charAt(i);
+            arr[c-'a']--;
+        }
+        for(int i=0;i<26;i++)
+        {
+            if(arr[i]==1)
+            return (char)(i+97);
+        }
+        throw null;
+
+        
     }
 }
