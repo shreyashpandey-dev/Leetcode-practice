@@ -9,39 +9,23 @@
  */
 
 class Solution {
-     TreeNode lca;
-    HashSet<TreeNode>arr=new HashSet<>();
-    void trav1(TreeNode root,TreeNode n1)
-    {
-        
-        if(root==n1)
-        {
-            if(arr.contains(root))
-            lca=root;
-            arr.add(root);
-            return;
-        }
-        if(root.val<n1.val)
-        {
-            if(arr.contains(root))
-                lca=root;
-            else
-            arr.add(root);
-            trav1(root.right,n1);
-        }
-        else
-        {
-            if(arr.contains(root))
-                lca=root;
-           arr.add(root);
-            trav1(root.left,n1); 
-        }
-    }
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        lca=root;
-        trav1(root,p);
-        trav1(root,q);
-        return lca;
+        int small=p.val>q.val?q.val:p.val;
+        int large=small==p.val?q.val:p.val;
+        while(root!=null)
+        {
+            if(root.val>=small && root.val<=large)
+            return root;
+            else if(root.val>large)
+            {
+                root=root.left;
+            }
+            else if(root.val<small)
+            {
+                root=root.right;
+            }
+        }
+        throw null;
         
     }
 }
