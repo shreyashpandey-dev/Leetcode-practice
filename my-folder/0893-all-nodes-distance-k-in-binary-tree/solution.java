@@ -27,7 +27,10 @@ class Solution {
         return;
         arr.add(root);
         if(root.val==x.val)
+        {
             ans.addAll(arr);
+            return;
+        }
         preorder(root.left,x,arr);
         preorder(root.right,x,arr);
         arr.remove(arr.size()-1);
