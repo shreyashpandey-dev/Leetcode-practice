@@ -1,77 +1,88 @@
-class Pair
+class Triplet
 {
-    int i;
-    int j;
-    Pair(int i,int j)
+    int r;
+    int c;
+    int min;
+    Triplet(int i,int j,int k)
     {
-        this.i=i;
-        this.j=j;
+        r=i;
+        c=j;
+        min=k;
     }
 }
 class Solution {
-    public int orangesRotting(int[][] grid) {
-        int n=grid.length;
-        int m=grid[0].length;
-        Queue<Pair>q=new LinkedList<>();
-        //ArrayList<Pair>arr=new ArrayList<>();
-        int total_oranges=0,rotten_oranges=0;
-        for(int i=0;i<grid.length;i++)
+    public int orangesRotting(int[][] arr) {
+        int n=arr.length;
+        int m=arr[0].length;
+        boolean vis[][]=new boolean[n][m];
+        Queue<Triplet>q=new LinkedList<>();
+        int cnt1=0;
+        for(int i=0;i<n;i++)
         {
-            for(int j=0;j<grid[i].length;j++)
+            for(int j=0;j<m;j++)
             {
-                if(grid[i][j]==2)
+                if(arr[i][j]==2)
                 {
-                    q.add(new Pair(i,j));
-                    rotten_oranges++;
+                q.add(new Triplet(i,j,0));
+                vis[i][j]=true;
                 }
-                if(grid[i][j]!=0)
-                    total_oranges++;
-                    
-                    
+                if(arr[i][j]==1)
+                cnt1++;
             }
         }
-        int cnt=0;
-        if(rotten_oranges==total_oranges)
-                return cnt;
+       // System.out.println(cnt1);
+        int minute=0;
         while(!q.isEmpty())
         {
-            int size=q.size();
-            cnt++;
-            for(int i=0;i<size;i++)
+           
+            Triplet p=q.poll();
+            int r=p.r;
+            int c=p.c;
+           //  System.out.println("r="+r+" c="+c+" cnt1="+cnt1);
+            minute=p.min;
+            //down
+            if(r+1<n)
             {
-                
-                Pair p=q.poll();
-                if(p.i>0 && grid[p.i-1][p.j]==1)
+                if(arr[r+1][c]==1 && !vis[r+1][c])
                 {
-                q.add(new Pair(p.i-1,p.j));
-                grid[p.i-1][p.j]=2;
-                    rotten_oranges++;
+                    vis[r+1][c]=true;
+                    q.add(new Triplet(r+1,c,minute+1));
+                    cnt1--;
                 }
-                if(p.i<n-1 && grid[p.i+1][p.j]==1)
-                {
-                q.add(new Pair(p.i+1,p.j));   //neeche
-                grid[p.i+1][p.j]=2;
-                    rotten_oranges++;
-                }
-                if(p.j>0 && grid[p.i][p.j-1]==1)
-                {
-                q.add(new Pair(p.i,p.j-1)); //Baaye
-                grid[p.i][p.j-1]=2;
-                    rotten_oranges++;
-                }
-                if(p.j<m-1 && grid[p.i][p.j+1]==1)
-                {
-                q.add(new Pair(p.i,p.j+1)); //Daaye
-                grid[p.i][p.j+1]=2;
-                    rotten_oranges++;
-                }
-                
             }
-            if(rotten_oranges==total_oranges)
-                return cnt;
-             
+            //right
+             if(c+1<m)
+            {
+                if(arr[r][c+1]==1 && !vis[r][c+1])
+                {
+                    vis[r][c+1]=true;
+                    q.add(new Triplet(r,c+1,minute+1));
+                    cnt1--;
+                }
+            }
+            //up
+             if(r-1>=0)
+            {
+                if(arr[r-1][c]==1 && !vis[r-1][c])
+                {
+                    vis[r-1][c]=true;
+                    q.add(new Triplet(r-1,c,minute+1));
+                    cnt1--;
+                }
+            }
+            //left
+             if(c-1>=0)
+            {
+                if(arr[r][c-1]==1 && !vis[r][c-1])
+                {
+                    vis[r][c-1]=true;
+                    q.add(new Triplet(r,c-1,minute+1));
+                    cnt1--;
+                }
+            }
+            
         }
-            return -1;
+        return cnt1==0?minute:-1;
         
     }
 }
