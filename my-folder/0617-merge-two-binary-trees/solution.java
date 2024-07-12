@@ -13,15 +13,28 @@
  *     }
  * }
  */
-public class Solution {
-    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
-        if (t1 == null)
-            return t2;
-        if (t2 == null)
-            return t1;
-        t1.val += t2.val;
-        t1.left = mergeTrees(t1.left, t2.left);
-        t1.right = mergeTrees(t1.right, t2.right);
-        return t1;
+class Solution {
+    public TreeNode mergeTrees(TreeNode r1, TreeNode r2) {
+        if(r1==null && r2==null)
+            return r2;
+        else if(r1==null && r2!=null)
+        {
+            //r2.val+=r1.val;
+            return r2;
+        }
+        else if(r1!=null && r2==null)
+        {
+            return r1;
+        }
+       else if(r1!=null && r2!=null)
+       {
+           r2.val+=r1.val;
+       }
+      r2.left=mergeTrees(r1.left,r2.left);
+      r2.right=mergeTrees(r1.right,r2.right);
+      return r2;
+        
+        
+        
     }
 }
