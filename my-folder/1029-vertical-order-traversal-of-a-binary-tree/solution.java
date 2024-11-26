@@ -61,6 +61,7 @@ class Solution {
             {
                 if(h.get(i).get(j)!=null)
                 {
+                //arr=h.get(i).get(j);
                 List<Integer>arr=h.get(i).get(j);
                 Collections.sort(arr);
                 ans1.addAll(arr);
