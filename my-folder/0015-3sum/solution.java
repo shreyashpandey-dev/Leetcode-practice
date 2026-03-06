@@ -1,42 +1,40 @@
 class Solution {
-    List<Integer> getList(int a,int b,int c)
-    {
-        List<Integer>li=new ArrayList<>();
-        li.add(a);
-        li.add(b);
-        li.add(c);
-        Collections.sort(li);
-        return li;
-    }
     public List<List<Integer>> threeSum(int[] arr) {
+        List<List<Integer>>ans=new ArrayList<>();
         int n=arr.length;
         Arrays.sort(arr);
-        HashSet<List<Integer>>visited=new HashSet<>();
-        List<List<Integer>>ans=new ArrayList<>();
-         for(int i=0;i<n-1;i++)
+        for(int i=0;i<n-2;i++)
         {
-            HashSet<Integer>h=new HashSet<>();
-            for(int j=i+1;j<n;j++)
+            while(i!=0 && i<(n-2) && arr[i]==arr[i-1])
+            i++;
+            int j=i+1;
+            int k=n-1;
+            while(j<k)
             {
-                int x=-(arr[i]+arr[j]);
-                if(h.contains(x))
+                if(arr[i]+arr[j]+arr[k]==0)
                 {
-                    List<Integer>al=getList(arr[i],x,arr[j]);
-                    if(!visited.contains(al))
-                    {
-                       ans.add(al);
-                        visited.add(al); 
-                    }
-                        
-                } 
-                else
-                {
-                    h.add(arr[j]);
-                    
+                List<Integer>subAns=new ArrayList<>();
+                subAns.add(arr[i]);
+                subAns.add(arr[j]);
+                subAns.add(arr[k]);
+                ans.add(subAns);
+                j++;
+                k--;
+                while(j<k && (arr[j]==arr[j-1]))  //save from triplet
+                j++;
+                while(j<k && (arr[k]==arr[k+1]))
+                k--;
                 }
+                else if(arr[i]+arr[j]+arr[k]<0)
+                {
+                    j=j+1;
+                }
+                else
+                k=k-1;
             }
         }
         return ans;
+        
         
     }
 }
