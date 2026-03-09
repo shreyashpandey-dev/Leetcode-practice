@@ -1,52 +1,46 @@
 class Solution {
     public String minWindow(String s, String t) {
-       int i=0,j=0,start=0;
         int n=s.length();
-        int min=1000000,temp=min;
-        HashMap<Character,Integer>m=new HashMap<>();
-        char ch[]=s.toCharArray();
-        for(char c: t.toCharArray())
-            m.put(c,m.getOrDefault(c,0)+1);
-        int count=m.size();
+        int i=0;
+        int j=0;
+        int min=(int)1e6;
+        int start=-1;
+        int end=-1;
+        HashMap<Character,Integer>need=new HashMap<>();
+        HashMap<Character,Integer>have=new HashMap<>();
+       for(int c=0;c<t.length();c++)
+       {
+            need.put(t.charAt(c),need.getOrDefault(t.charAt(c),0)+1);
+       }
+        int formed=0;
+        int required=need.size();
         while(j<n)
         {
-            if(m.containsKey(ch[j]))
+            System.out.println("Before start of loop , i="+i+" j="+j);
+            char jVal=s.charAt(j);
+            have.put(jVal,have.getOrDefault(jVal,0)+1);
+            //tb tk window badhao jb tk saare t ke values na aa jaye
+            if(need.containsKey(jVal)&& need.get(jVal).equals(have.get(jVal)))
+            formed++;
+            //while window is valid , shrink window
+            while(formed==required)
             {
-             m.put(ch[j],m.getOrDefault(ch[j],0)-1);
-            if(m.get(ch[j])==0)
-                count--;   
-            }     
-            if(count>0)
-                j++;
-            if(count==0)
-            {
-                temp=min;
-                min=Math.min(min,j-i+1);
-                if(temp!=min)
-                start=i;
-                while(count==0)
-                {
-                    if(m.containsKey(ch[i]))
-                    {
-                       m.put(ch[i],m.getOrDefault(ch[i],0)+1);  
-                         if(m.get(ch[i])==1)
-                        count++;
-                    }
-                    
-                    i++;
-                     if(count==0)
-                    {
-                         temp=min;
-                        min=Math.min(min,j-i+1);
-                         if(temp!=min)
-                        start=i;
-                    }
+                 if ((j - i + 1) < min) {
+                    min = j - i + 1;
+                    start = i;
+                    end = j;
                 }
-                j++;
+                char iVal=s.charAt(i);
+                if(have.containsKey(iVal))
+                have.put(iVal,have.get(iVal)-1);
+                if(need.containsKey(iVal) && have.get(iVal)<need.get(iVal))
+                formed--;
+                i++;
+
             }
+            j++;
         }
-        if(min==1000000)
-            return "";
-        return s.substring(start,start+min);
+        return start==-1?"":s.substring(start,end+1);
+        
     }
 }
