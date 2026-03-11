@@ -1,32 +1,24 @@
 class Solution {
     public int characterReplacement(String s, int k) {
+        int max=1;
+        int n=s.length();
         int i=0;
         int j=0;
-        int cnt[]=new int[26];
-       int ans=0;
-        int max=0;
-        while(j<s.length())
+        int freq[]=new int[26];
+        int maxFreq=0;
+        while(j<n)
         {
-            int y=s.charAt(j)-'A';
-            cnt[y]++;
-            //get the most frequent character
-            for(int l=0;l<26;l++)
+            freq[s.charAt(j)-'A']++;
+            maxFreq=Math.max(maxFreq,freq[s.charAt(j)-'A']);
+            //shrink window if u cannot replace characters
+            while((j-i+1)-maxFreq>k)
             {
-                if(cnt[max]<cnt[l])
-                    max=l;
+                freq[s.charAt(i)-'A']--;
+                i++;
             }
-            int count=j-i+1-cnt[max];
-            if(count<=k)
-                ans=Math.max(ans,j-i+1);
-            else if(count>k)
-            {
-                int z=s.charAt(i)-'A';
-                cnt[z]--;
-                    i++;
-            }
+            max=Math.max(max,(j-i+1));
             j++;
-            
+        }
+        return max;
     }
-        return ans;
-}
 }
