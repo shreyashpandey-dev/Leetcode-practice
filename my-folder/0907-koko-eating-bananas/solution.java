@@ -1,36 +1,38 @@
 class Solution {
-    public int minEatingSpeed(int[] arr, int h){
-        int low=1;
-        int n=arr.length;
-        int high=arr[0];
-        int res=1;
-        for(int i=1;i<n;i++)
+    public long calc(int k,int[]piles)
+    {
+        long mod_sum=0;
+        for(int x:piles)
         {
-            if(high<arr[i])
-                high=arr[i];
-                
+            mod_sum+=(x+k-1)/k;
         }
-        while(low<=high)
+        return mod_sum;
+        
+    }
+    public int minEatingSpeed(int[] piles, int target) {
+        int max=-1;
+        int min=1;
+        for(int x:piles)
         {
-            int mid=low+(high-low)/2;
-            long sum=0;
-            for(int i=0;i<n;i++)
+            if(max<x)
+            max=x;
+        }
+        int res=(int)1e9;
+        int l=min;
+        int h=max;
+        while(l<=h)
+        {
+            int m=l+(h-l)/2;
+            long exp_res=calc(m,piles);
+            if(exp_res<=target)
             {
-                if(arr[i]%mid==0)
-                    sum+=arr[i]/mid;
-                else
-                    sum+=(arr[i]/mid)+1;
+                res=m;
+                h=m-1;
             }
-            if(sum<=h)
-            {
-                 res=mid;
-                high=mid-1;
-            }
-            else if(sum>h)
-                low=mid+1;
+            else if (exp_res>target)
+            l=m+1;     
         }
         return res;
-        
         
     }
 }
