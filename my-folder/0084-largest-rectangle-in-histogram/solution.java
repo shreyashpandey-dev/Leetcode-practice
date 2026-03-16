@@ -1,31 +1,38 @@
 class Solution {
-    public static int max(int a,int b)
-    {
-        if(a<b)
-            return b;
-        return a;
-    }
-    public int largestRectangleArea(int[] arr) {
-        int n=arr.length;
-        int res=0,curr;
-        Stack<Integer>s=new Stack<>();
-        for(int i=0;i<n;i++)
-        {
-            while(!s.isEmpty() && arr[s.peek()]>=arr[i])
-            {
-                int t=s.pop();
-                curr=arr[t]*(s.isEmpty()?i:i-s.peek()-1);
-                res=max(res,curr);
-            }
-            s.push(i);
+    public int largestRectangleArea(int[] heights) {
+
+        int n = heights.length;
+        int next[] = new int[n];
+        int prev[] = new int[n];
+        Stack<Integer> st = new Stack<>();
+
+        // Next smaller
+        for(int i=n-1;i>=0;i--){
+            while(!st.isEmpty() && heights[st.peek()]>=heights[i])
+                st.pop();
+
+            next[i] = st.isEmpty() ? n : st.peek();
+            st.push(i);
         }
-        while(!s.isEmpty())
-        {
-            int t=s.pop();
-            curr=arr[t]*(s.isEmpty()?n:n-s.peek()-1);
-            res=max(res,curr);
+
+        st.clear();
+
+        // Previous smaller
+        for(int i=0;i<n;i++){
+            while(!st.isEmpty() && heights[st.peek()]>=heights[i])
+                st.pop();
+
+            prev[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
         }
-        return res;
-       
+
+        int max=0;
+
+        for(int i=0;i<n;i++){
+            int width = next[i]-prev[i]-1;
+            max = Math.max(max, heights[i]*width);
+        }
+
+        return max;
     }
 }
