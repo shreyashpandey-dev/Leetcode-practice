@@ -1,23 +1,45 @@
 class Solution {
     public int trap(int[] height) {
-        int n=height.length,s=0;
-     int pmax[]=new int[n];
-        pmax[0]=height[0];
-     int smax[]=new int[n];
-        smax[n-1]=height[n-1];
-        for(int i=1;i<n;i++)
+        int n=height.length;
+        int nextG[]=new int[n];
+        int prevG[]=new int[n];
+        Stack<Integer> st =new Stack<>();
+        //next Greater
+        for(int i=n-1;i>=0;i--)
         {
-            pmax[i]=Math.max(pmax[i-1],height[i]);
+            while(!st.isEmpty() && height[i]>=height[st.peek()])
+            {
+                st.pop();
+            }
+            nextG[i]=st.isEmpty()?-1:st.peek();
+            if(!st.isEmpty() && height[i]>=height[st.peek()]) 
+            st.push(i);
+            else if (st.isEmpty())
+            st.push(i);
         }
-        for(int i=n-2;i>=0;i--)
-        {
-            smax[i]=Math.max(smax[i+1],height[i]);
-        }
+        st.clear();
+        //previous Greater
         for(int i=0;i<n;i++)
         {
-            s+=Math.min(pmax[i],smax[i])-height[i];
+            while(!st.isEmpty() && height[i]>=height[st.peek()])
+            st.pop();
+            prevG[i]=st.isEmpty()?-1:st.peek();
+            if(!st.isEmpty() && height[i]>=height[st.peek()]) 
+            st.push(i);
+            else if (st.isEmpty())
+            st.push(i);
         }
-        return s;
+        int area=0;
+        System.out.println(Arrays.toString(nextG));
+         System.out.println(Arrays.toString(prevG));
+        for(int i=0;i<n;i++)
+        {
+            if(nextG[i]!=-1 && prevG[i]!=-1)
+            area+=Math.min(height[nextG[i]],height[prevG[i]])-height[i];
+            System.out.println("i="+i+" area="+area);
+        }
+        return area;
+
         
     }
 }
