@@ -9,38 +9,45 @@
  * }
  */
 class Solution {
-    ListNode prev=null;
-    public void rev(ListNode curr)
+    public boolean comp(ListNode revHead,ListNode slow)
     {
-        while(curr!=null)
+        while(slow!=null)
         {
-            ListNode next=curr.next;
-            curr.next=prev;
-            prev=curr;
-            curr=next;
-        }
-    }
-    public boolean isPalindrome(ListNode head) {
-        ListNode slow=head;
-        ListNode fast=head;
-        ListNode st_prev=head;
-        while(fast!=null && fast.next!=null)
-        {
-            fast=fast.next.next;
-            st_prev=slow;
-            slow=slow.next;
-        }
-        st_prev.next=null;
-        rev(slow);
-        while(head!=null)
-        {
-            if(head.val!=prev.val)
+            if(revHead.val!=slow.val)
             return false;
-            head=head.next;
-            prev=prev.next;
+            slow=slow.next;
+            revHead=revHead.next;
         }
         return true;
-
-       
+    }
+    public ListNode rev(ListNode head)
+    {
+        //base cond
+        if(head==null ||head.next==null)
+        return head;
+        ListNode revHead=rev(head.next);
+        head.next.next=head;
+        head.next=null;
+        return revHead;
+    }
+    public boolean isPalindrome(ListNode head) {
+        //approach -> find mid , revHead=rev(head) comp(revHead,slow)
+        ListNode slow=head;
+        ListNode fast=head;
+        ListNode prev=null;
+        if(head.next==null)
+        return true;
+        while(fast!=null&& fast.next!=null)
+        {
+            prev=slow;
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        prev.next=null;
+        ListNode revHead=rev(head);
+        if(fast!=null)
+        slow=slow.next;
+        return comp(revHead,slow);
+        
     }
 }
