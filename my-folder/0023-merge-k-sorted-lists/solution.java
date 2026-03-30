@@ -12,7 +12,7 @@ class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         int k=lists.length;
         ListNode head=null,tail=null;
-        PriorityQueue<ListNode>pq=new PriorityQueue<>((node1,node2)->Integer.compare(node1.val,node2.val));
+        PriorityQueue<ListNode>pq=new PriorityQueue<>((node1,node2)->node1.val-node2.val);
         for(int i=0;i<k;i++)
         {
             if(lists[i]!=null)
@@ -38,3 +38,4 @@ class Solution {
         
     }
 }
+
