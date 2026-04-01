@@ -1,35 +1,32 @@
 class Solution {
-     public void DFSRec(int i,int j,char grid[][],boolean[][]visited)
+    public void dfs(char grid[][],int i,int j,boolean vis[][])
     {
-        if(i<0 ||j<0 ||i>=grid.length||j>=grid[0].length||visited[i][j]==true||grid[i][j]=='0')
+        if(i<0 || i>=grid.length||j<0 ||j>=grid[0].length||grid[i][j]=='0' || vis[i][j])
         return;
-        visited[i][j]=true;
-        DFSRec(i-1,j,grid,visited);//North
-        DFSRec(i,j+1,grid,visited);//East
-        DFSRec(i+1,j,grid,visited);//South
-        DFSRec(i,j-1,grid,visited);//West
-        // DFSRec(i-1,j-1,grid,visited);//NW
-        // DFSRec(i-1,j+1,grid,visited);//NE
-        // DFSRec(i+1,j-1,grid,visited);//SW
-        // DFSRec(i+1,j+1,grid,visited);//SE
-        
+        vis[i][j]=true;
+        dfs(grid,i-1,j,vis); //go to neighbour N,W,S,E
+        dfs(grid,i,j-1,vis);
+        dfs(grid,i+1,j,vis);
+        dfs(grid,i,j+1,vis);
+
     }
     public int numIslands(char[][] grid) {
-        boolean[][]visited=new boolean[grid.length][grid[0].length];
-        int count=0;
-        for(int i=0;i<grid.length;i++)
+        int n=grid.length;
+        int m=grid[0].length;
+        boolean vis[][]=new boolean[n][m];
+        int cnt=0;
+        for(int i=0;i<n;i++)
         {
-            for(int j=0;j<grid[0].length;j++)
+            for(int j=0;j<m;j++)
             {
-                if(!visited[i][j] && grid[i][j]=='1')
+                if(grid[i][j]=='1' && !vis[i][j])  //its a land and its not visited
                 {
-                    DFSRec(i,j,grid,visited);
-                    count++;
+                    dfs(grid,i,j,vis);
+                    cnt++;
                 }
             }
         }
-        return count;
-        
+        return cnt;
         
     }
 }
