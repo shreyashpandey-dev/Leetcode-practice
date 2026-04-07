@@ -1,88 +1,77 @@
-class Triplet
+class Pair
 {
-    int r;
-    int c;
-    int min;
-    Triplet(int i,int j,int k)
+    int i;
+    int j;
+    Pair(int i,int j)
     {
-        r=i;
-        c=j;
-        min=k;
+        this.i=i;
+        this.j=j;
     }
 }
 class Solution {
-    public int orangesRotting(int[][] arr) {
-        int n=arr.length;
-        int m=arr[0].length;
-        boolean vis[][]=new boolean[n][m];
-        Queue<Triplet>q=new LinkedList<>();
-        int cnt1=0;
-        for(int i=0;i<n;i++)
+    public int orangesRotting(int[][] grid) {
+        int n=grid.length;
+        int m=grid[0].length;
+        Queue<Pair>q=new LinkedList<>();
+        //ArrayList<Pair>arr=new ArrayList<>();
+        int total_oranges=0,rotten_oranges=0;
+        for(int i=0;i<grid.length;i++)
         {
-            for(int j=0;j<m;j++)
+            for(int j=0;j<grid[i].length;j++)
             {
-                if(arr[i][j]==2)
+                if(grid[i][j]==2)
                 {
-                q.add(new Triplet(i,j,0));
-                vis[i][j]=true;
+                    q.add(new Pair(i,j));
+                    rotten_oranges++;
                 }
-                if(arr[i][j]==1)
-                cnt1++;
+                if(grid[i][j]!=0)
+                    total_oranges++;
+                    
+                    
             }
         }
-       // System.out.println(cnt1);
-        int minute=0;
+        int cnt=0;
+        if(rotten_oranges==total_oranges)
+                return cnt;
         while(!q.isEmpty())
         {
-           
-            Triplet p=q.poll();
-            int r=p.r;
-            int c=p.c;
-           //  System.out.println("r="+r+" c="+c+" cnt1="+cnt1);
-            minute=p.min;
-            //down
-            if(r+1<n)
+            int size=q.size();
+            cnt++;
+            for(int i=0;i<size;i++)
             {
-                if(arr[r+1][c]==1 && !vis[r+1][c])
+                
+                Pair p=q.poll();
+                if(p.i>0 && grid[p.i-1][p.j]==1)
                 {
-                    vis[r+1][c]=true;
-                    q.add(new Triplet(r+1,c,minute+1));
-                    cnt1--;
+                q.add(new Pair(p.i-1,p.j));
+                grid[p.i-1][p.j]=2;
+                    rotten_oranges++;
                 }
-            }
-            //right
-             if(c+1<m)
-            {
-                if(arr[r][c+1]==1 && !vis[r][c+1])
+                if(p.i<n-1 && grid[p.i+1][p.j]==1)
                 {
-                    vis[r][c+1]=true;
-                    q.add(new Triplet(r,c+1,minute+1));
-                    cnt1--;
+                q.add(new Pair(p.i+1,p.j));   //neeche
+                grid[p.i+1][p.j]=2;
+                    rotten_oranges++;
                 }
-            }
-            //up
-             if(r-1>=0)
-            {
-                if(arr[r-1][c]==1 && !vis[r-1][c])
+                if(p.j>0 && grid[p.i][p.j-1]==1)
                 {
-                    vis[r-1][c]=true;
-                    q.add(new Triplet(r-1,c,minute+1));
-                    cnt1--;
+                q.add(new Pair(p.i,p.j-1)); //Baaye
+                grid[p.i][p.j-1]=2;
+                    rotten_oranges++;
                 }
-            }
-            //left
-             if(c-1>=0)
-            {
-                if(arr[r][c-1]==1 && !vis[r][c-1])
+                if(p.j<m-1 && grid[p.i][p.j+1]==1)
                 {
-                    vis[r][c-1]=true;
-                    q.add(new Triplet(r,c-1,minute+1));
-                    cnt1--;
+                q.add(new Pair(p.i,p.j+1)); //Daaye
+                grid[p.i][p.j+1]=2;
+                    rotten_oranges++;
                 }
+                
             }
-            
+            if(rotten_oranges==total_oranges)
+                return cnt;
+             
         }
-        return cnt1==0?minute:-1;
+            return -1;
         
     }
 }
