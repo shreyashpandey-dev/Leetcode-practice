@@ -1,36 +1,29 @@
 class Solution {
-    int coin[];
-    public int minCoins(int ind,int amount,int[][]dp)
+    int func(int coins[],int amt,int n,int dp[][])
     {
-        if(ind==0)
+        if(n==0)
         {
-            if(amount%coin[ind]==0)
-                return amount/coin[ind];
+            if(amt%coins[n]==0)
+            return amt/coins[n];
             else
-                return (int)1e9;
+            return (int)1e9;
         }
-        if(dp[ind][amount]!=-1)
-            return dp[ind][amount];
-        int notTake=0+minCoins(ind-1,amount,dp);
+        if(dp[n][amt]!=-1)
+        return dp[n][amt];
+        int notTake=0+func(coins,amt,n-1,dp);
         int take=(int)1e9;
-        if(coin[ind]<=amount)
-            take=1+minCoins(ind,amount-coin[ind],dp);
-        return dp[ind][amount]=Math.min(take,notTake);
+        if(amt>=coins[n])
+        take=1+func(coins,amt-coins[n],n,dp);
+        return dp[n][amt]=Math.min(take,notTake);
+
     }
     public int coinChange(int[] coins, int amount) {
-        int dp[][]=new int[coins.length][amount+1];
-        for(int i=0;i<dp.length;i++)
-        {
-            for(int j=0;j<dp[0].length;j++)
-                dp[i][j]=-1;
-        }
-        coin=new int[coins.length];
-       for(int i=0;i<coins.length;i++)
-           coin[i]=coins[i];
-        int y= minCoins(coins.length-1,amount,dp);
-        if(y>=(int)1e9)
-            return -1;
-        else
-            return y;
+        int n=coins.length;
+        int dp[][]=new int[n][amount+1];
+        for(int rows[]:dp)
+        Arrays.fill(rows,-1);
+        int res=func(coins,amount,n-1,dp);
+        return res>=(int)1e9?-1:res;
+        
     }
 }
