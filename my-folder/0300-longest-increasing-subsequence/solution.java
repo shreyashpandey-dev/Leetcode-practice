@@ -1,50 +1,23 @@
 class Solution {
-//     public int rec(int ind,int prevInd,int arr[],int dp[][])
-// 	{
-// 		if(ind==n)
-// 		return 0;
-// 		if(dp[ind][prevInd+1]!=-1)
-// 		return dp[ind][prevInd+1];
-// 		int not_take=rec(ind+1,prevInd,arr,dp);
-// 		int take=-(int)1e9;
-// 		if(prevInd==0 ||arr[ind]>arr[prevInd])
-// 		take=1+rec(ind+1,ind,arr,dp);
-// 		return dp[ind][prevInd+1]=Math.max(take,not_take);
-
-// 	}
-    public int findCeil(ArrayList<Integer>arr,int target)
+    public int lis(int i,int prev_ind,int nums[],int n,int dp[][])
     {
-        int low=0;
-        int high=arr.size()-1;
-        int ans=0;
-        while(low<=high)
-        {
-            int mid=low+(high-low)/2;
-            if(arr.get(mid)>=target)
-            {
-                ans=mid;
-                high=mid-1;
-            }
-            else if(arr.get(mid)<target)
-                low=mid+1;
-        }
-        return ans;
+        if(i==n+1)
+        return 0;
+        if(dp[i][prev_ind]!=-1)
+        return dp[i][prev_ind];
+        int not_take=0+lis(i+1,prev_ind,nums,n,dp);
+        int take=0;
+        if(prev_ind==0 || nums[i-1]>nums[prev_ind-1])
+        take=1+lis(i+1,i,nums,n,dp);
+        return dp[i][prev_ind]=Math.max(take,not_take);
     }
-    public int lengthOfLIS(int[] arr) {
-        int n=arr.length;
-        ArrayList<Integer>temp=new ArrayList<>();
-        temp.add(arr[0]);
-        for(int i=1;i<n;i++)
-        {
-            if(arr[i]>temp.get(temp.size()-1))
-                temp.add(arr[i]);
-            else
-            {
-                int ind=findCeil(temp,arr[i]);
-                temp.set(ind,arr[i]);
-            }
-        }
-        return temp.size();
+    public int lengthOfLIS(int[] nums) {
+        int prev_ind=0;
+        int n=nums.length;
+        int dp[][]=new int[n+1][n+1];
+        for(int rows[]:dp)
+        Arrays.fill(rows,-1);
+        return lis(1,prev_ind,nums,n,dp);
         
     }
 }
