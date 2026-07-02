@@ -5,8 +5,8 @@ class Solution {
         Arrays.sort(arr);
         for(int i=0;i<n-2;i++)
         {
-            while(i!=0 && i<(n-2) && arr[i]==arr[i-1])
-            i++;
+            if(i!=0 && arr[i]==arr[i-1])
+            continue;
             int j=i+1;
             int k=n-1;
             while(j<k)
