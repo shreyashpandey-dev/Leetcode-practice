@@ -1,45 +1,45 @@
 class Solution {
-    public List<List<Integer>> fourSum(int[] arr, int target) {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        int n=nums.length;
         List<List<Integer>>ans=new ArrayList<>();
-        int n=arr.length;
-        Arrays.sort(arr);
-        HashSet<List<Integer>>h=new HashSet<>();
         for(int i=0;i<n-3;i++)
         {
+            if(i!=0 && nums[i]==nums[i-1])
+            continue;
             for(int j=i+1;j<n-2;j++)
             {
+                if(j!=i+1 && nums[j]==nums[j-1])
+                continue;
                 int k=j+1;
                 int l=n-1;
                 while(k<l)
                 {
-                    long x1=arr[i]+arr[j];
-                    long x2=arr[k]+arr[l];
-                    long x=x1+x2;
-                    if(x==target)
+                    long sum=(long)nums[i]+nums[j]+nums[k]+nums[l];
+                    if(sum==target)
                     {
-                        List<Integer>ans1=new ArrayList<>();   
-                        ans1.add(arr[i]);
-                        ans1.add(arr[j]);
-                        ans1.add(arr[k]);
-                        ans1.add(arr[l]);
-                        if(!h.contains(ans1))
-                        {
-                            ans.add(ans1);
-                            h.add(ans1);
-                        }
+                        List<Integer>res=new ArrayList<>();
+                        res.add(nums[i]);
+                        res.add(nums[j]);
+                        res.add(nums[k]);
+                        res.add(nums[l]);
+                        ans.add(res);
+                        System.out.println(res);
                         k++;
                         l--;
+                        while(k<l && nums[k]==nums[k-1])
+                           k++;
+                        while(k<l && nums[l]==nums[l+1])
+                           l--;
                     }
-                    else if(x>target)
-                        l--;
-                    else if(x<target)
-                        k++;
-
-                    }
-
+                    else if(sum<target)
+                    k++;
+                    else
+                    l--;
                 }
             }
-            return ans;
+        }
+        return ans;
         
     }
 }
