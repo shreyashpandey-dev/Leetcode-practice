@@ -1,44 +1,34 @@
 class Solution {
-    public int[] findOrder(int V, int[][] preReq) {
+    public int[] findOrder(int numCourses, int[][] prereq) {
         List<List<Integer>>adj=new ArrayList<>();
-        for(int i=0;i<V;i++)
+        int ind[]=new int[numCourses];
+        for(int i=0;i<numCourses;i++)
+        adj.add(new ArrayList<>());
+        for(int i=0;i<prereq.length;i++)
         {
-            adj.add(new ArrayList<>());
+            adj.get(prereq[i][1]).add(prereq[i][0]);
+            ind[prereq[i][0]]++;
         }
-        int indeg[]=new int[V];
-        for(int i=0;i<preReq.length;i++)
-        {
-            adj.get(preReq[i][1]).add(preReq[i][0]);
-            indeg[preReq[i][0]]++;
-        }
+        int[]res=new int[numCourses];
         Queue<Integer>q=new LinkedList<>();
-        for(int i=0;i<V;i++)
+        for(int i=0;i<numCourses;i++)
         {
-            if(indeg[i]==0)
-                q.add(i);
+            if(ind[i]==0)
+            q.add(i);
         }
-        int ans[]=new int[V];
-        Arrays.fill(ans,-1);
-        int cnt=0;
-        int j=0;
+        int i=0;
         while(!q.isEmpty())
         {
             int u=q.poll();
-            ans[j++]=u;
+            res[i++]=u;
             for(int v:adj.get(u))
             {
-                if(indeg[v]>0)
-                    indeg[v]--;
-                if(indeg[v]==0)
-                    q.add(v);
+                ind[v]--;
+                if(ind[v]==0)
+                q.add(v);
             }
-            cnt++;
         }
-       return cnt!=V?new int[0]:ans;
-        
-        
-        
-        
+        return i==numCourses?res:new int[]{};
         
     }
 }
