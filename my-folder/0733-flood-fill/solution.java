@@ -1,46 +1,47 @@
-class Pair
-{
-    int i,j;
-    Pair(int i,int j)
+class Pair{
+    int x,y;
+    Pair(int x, int y)
     {
-        this.i=i;
-        this.j=j;
+        this.x=x;
+        this.y=y;
     }
 }
 class Solution {
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        Queue<Pair>q=new LinkedList<>();
-        int m=image.length;
-        int n=image[0].length;
-        int temp=image[sr][sc];
+                Queue<Pair>q=new LinkedList<>();
+        int n=image.length;
+        int m=image[0].length;
+        int totalC=0,colorC=0;
+        if(color==image[sr][sc])
+        return image;
+        int orgCol=image[sr][sc];
         image[sr][sc]=color;
         q.add(new Pair(sr,sc));
-        if(color == temp) return image;
         while(!q.isEmpty())
         {
-            Pair p=q.poll();
-            int i=p.i;
-            int j=p.j;
-            if(i>0 && image[i-1][j]==temp)
-            {
-                image[i-1][j]=color;
-                q.add(new Pair(i-1,j));
-            }
-            if(i<m-1 && image[i+1][j]==temp)
-            {
-                image[i+1][j]=color;
-                 q.add(new Pair(i+1,j));
-            }
-            if(j>0 && image[i][j-1]==temp)
-            {
-                image[i][j-1]=color;
-                 q.add(new Pair(i,j-1));
-            }
-            if(j<n-1 && image[i][j+1]==temp)
-            {
-                image[i][j+1]=color;
-                 q.add(new Pair(i,j+1));
-            }
+                Pair p=q.poll();
+                int x=p.x;
+                int y=p.y;
+                if(x+1<n && image[x+1][y]==orgCol)
+                {
+                    image[x+1][y]=color;
+                    q.add(new Pair(x+1,y));
+                }
+                if(y+1<m && image[x][y+1]==orgCol)
+                {
+                    image[x][y+1]=color;
+                    q.add(new Pair(x,y+1));
+                }
+                if(x-1>=0 && image[x-1][y]==orgCol)
+                {
+                    image[x-1][y]=color;
+                    q.add(new Pair(x-1,y));
+                }
+                if(y-1>=0 && image[x][y-1]==orgCol)
+                {
+                    image[x][y-1]=color;
+                    q.add(new Pair(x,y-1));
+                }
         }
         return image;
         
