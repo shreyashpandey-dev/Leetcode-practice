@@ -1,61 +1,72 @@
-class Solution {
-    int n=0,m=0;
-    public void dfs(int i,int j,char mat[][])
+class Pair
+{
+    int x,y;
+    Pair(int x,int y)
     {
-        mat[i][j]='B';
-        int dx[]={-1,1,0,0};
-        int dy[]={0,0,-1,1};
-        for(int k=0;k<4;k++)
-        {
-            int x=i+dx[k];
-            int y=j+dy[k];
-            if(x>=0 && x<=n-1 && y>=0 && y<=m-1 && mat[x][y]=='O')
-                dfs(x,y,mat);
-                
-        }
+        this.x=x;
+        this.y=y;
     }
-    public void solve(char[][] mat) {
-         n=mat.length;
-        m=mat[0].length;
-        for(int i=0;i<n;i++)   
+}
+class Solution {
+    public void solve(char[][] board) {
+        int n=board.length;
+        int m=board[0].length;
+        Queue<Pair>q=new LinkedList<>();
+        for(int i=0;i<n;i++)
         {
-            int j=0;
-            if(mat[i][j]=='O')  
-                dfs(i,j,mat);
-            j=m-1;
-            if(mat[i][j]=='O')  
-                dfs(i,j,mat);
+            if(board[i][0]=='O')
+            {
+            q.offer(new Pair(i,0));
+            board[i][0]='Y';
+            }
+            if(board[i][m-1]=='O')
+            {
+            q.offer(new Pair(i,m-1));
+            board[i][m-1]='Y';
+            }
         }
-        for(int i=0;i<m;i++)
+        for(int j=0;j<m;j++)
         {
-            int j=0;
-            if(mat[j][i]=='O')   
-                dfs(j,i,mat);
-            j=n-1;
-            if(mat[j][i]=='O')
-                dfs(j,i,mat);
+            if(board[0][j]=='O')
+            {
+            q.offer(new Pair(0,j));
+            board[0][j]='Y';
+            }
+            if(board[n-1][j]=='O')
+            {
+            q.offer(new Pair(n-1,j));
+            board[n-1][j]='Y';
+            }
         }
-        // for(int i=0;i<n;i++)
-        // {
-        //     for(int j=0;j<m;j++)
-        //     {
-        //         System.out.print(mat[i][j]+" ");
-        //     }
-        //     System.out.println();
-        // }
+        while(!q.isEmpty())
+        {
+            Pair p=q.poll();
+            int x=p.x;
+            int y=p.y;
+            int dx[]={-1,1,0,0};
+            int dy[]={0,0,-1,1};
+            for(int i=0;i<4;i++)
+            {
+                int newX=x+dx[i];
+                int newY=y+dy[i];
+                if(newX>=0 && newX<n && newY>=0 && newY<m && board[newX][newY]=='O')
+                {
+                    q.offer(new Pair(newX,newY));
+                    board[newX][newY]='Y';
+                }
+            }
+            
+        }
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
             {
-                if(mat[i][j]=='O')
-                    mat[i][j]='X';
-                if(mat[i][j]=='B')
-                    mat[i][j]='O';
+            if(board[i][j]=='Y')
+            board[i][j]='O';
+            else if(board[i][j]=='O')
+            board[i][j]='X';
             }
         }
-        
-        
-        
-        
+
     }
 }
