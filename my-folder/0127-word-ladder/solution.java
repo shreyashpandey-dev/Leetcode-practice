@@ -1,45 +1,43 @@
-class Pair 
+class Pair
 {
     String word;
     int steps;
-    Pair(String w,int s)
+    Pair(String word,int steps)
     {
-        word=w;
-        steps=s;
+        this.word=word;
+        this.steps=steps;
     }
+
 }
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         HashSet<String>h=new HashSet<>(wordList);
-        Queue<Pair>q=new LinkedList<>();
+        Queue<Pair> q=new ArrayDeque<>();
         q.add(new Pair(beginWord,1));
-        h.remove(beginWord);
+        q.remove(beginWord);
         while(!q.isEmpty())
         {
-
             Pair p=q.poll();
             String word=p.word;
             int steps=p.steps;
             if(word.equals(endWord))
-                return steps;
+            return steps;
             for(int i=0;i<word.length();i++)
             {
-            for(char ch='a';ch<='z';ch++)
-            {
-                char[]charArr=word.toCharArray();
-                charArr[i]=ch;
-                String newWord=new String(charArr);
-                if(h.contains(newWord))
+                for(char ch='a';ch<='z';ch++)
                 {
-                    h.remove(newWord);
-                    q.add(new Pair(newWord,steps+1));
+                    char[] charArr=word.toCharArray();
+                    charArr[i]=ch;
+                    String newWord=new String(charArr);
+                    if(h.contains(newWord))
+                    {
+                        h.remove(newWord);
+                        q.offer(new Pair(newWord,steps+1));
+                    }
+
                 }
-            }
             }
         }
         return 0;
-        
-        
-        
     }
 }
